@@ -33,7 +33,7 @@ public class NimSpiel extends JFrame {
 	private JMenuItem newFileMenuItem;
 	private JMenu jMenu3;
 	private JMenuBar jMenuBar1;
-	private JPanel[] Hoelzer;
+	private JPanel[] hoelzer;
 
 	public static void main(String... args) {
 		final NimSpiel inst = new NimSpiel("NimSpiel");
@@ -66,77 +66,73 @@ public class NimSpiel extends JFrame {
 			jSplitPane.setOneTouchExpandable(true);
 			jSplitPane.setVisible(true);
 
-			Hoelzer = new JPanel[40];
+			hoelzer = new JPanel[40];
 			for (int i = 0; i < 20; i++) {
-				Hoelzer[i] = new JPanel();
-				Hoelzer[i].setBackground(Color.yellow);
-				Hoelzer[i].setBorder(new LineBorder(Color.black));
-				Hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
-				jPanelUpper.add(Hoelzer[i]);
+				hoelzer[i] = new JPanel();
+				hoelzer[i].setBackground(Color.yellow);
+				hoelzer[i].setBorder(new LineBorder(Color.black));
+				hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
+				jPanelUpper.add(hoelzer[i]);
 			}
 			for (int i = 20; i < 40; i++) {
-				Hoelzer[i] = new JPanel();
-				Hoelzer[i].setBackground(Color.yellow);
-				Hoelzer[i].setBorder(new LineBorder(Color.black));
-				Hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
-				jPanelLower.add(Hoelzer[i]);
+				hoelzer[i] = new JPanel();
+				hoelzer[i].setBackground(Color.yellow);
+				hoelzer[i].setBorder(new LineBorder(Color.black));
+				hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
+				jPanelLower.add(hoelzer[i]);
 			}
 
 			this.setSize(400, 350);
-			{
-				jMenuBar1 = new JMenuBar();
-				setJMenuBar(jMenuBar1);
-				{
-					jMenu3 = new JMenu();
-					jMenuBar1.add(jMenu3);
-					jMenu3.setText("Datei");
-					{
-						newFileMenuItem = new JMenuItem();
-						jMenu3.add(newFileMenuItem);
-						newFileMenuItem.setText("Neues Spiel");
-						newFileMenuItem.addActionListener(
-								NimSpiel::newFileMenuItemActionPerformed);
 
-						openFileMenuItem = new JMenuItem();
-						jMenu3.add(openFileMenuItem);
-						openFileMenuItem.setText("Open");
+			jMenuBar1 = new JMenuBar();
+			setJMenuBar(jMenuBar1);
 
-						jSeparator2 = new JSeparator();
-						jMenu3.add(jSeparator2);
+			jMenu3 = new JMenu();
+			jMenuBar1.add(jMenu3);
+			jMenu3.setText("Datei");
 
-						exitMenuItem = new JMenuItem();
-						jMenu3.add(exitMenuItem);
-						exitMenuItem.setText("Beenden");
-						exitMenuItem.addActionListener(evt -> System.exit(0));
-					}
+			newFileMenuItem = new JMenuItem();
+			jMenu3.add(newFileMenuItem);
+			newFileMenuItem.setText("Neues Spiel");
+			newFileMenuItem.addActionListener(
+					NimSpiel::newFileMenuItemActionPerformed);
 
-					jMenu4 = new JMenu();
-					jMenuBar1.add(jMenu4);
-					jMenu4.setText("Bearbeiten");
+			openFileMenuItem = new JMenuItem();
+			jMenu3.add(openFileMenuItem);
+			openFileMenuItem.setText("Open");
 
-					pasteMenuItem = new JMenuItem();
-					jMenu4.add(pasteMenuItem);
-					pasteMenuItem.setText("Paste");
+			jSeparator2 = new JSeparator();
+			jMenu3.add(jSeparator2);
 
-					jSeparator1 = new JSeparator();
-					jMenu4.add(jSeparator1);
+			exitMenuItem = new JMenuItem();
+			jMenu3.add(exitMenuItem);
+			exitMenuItem.setText("Beenden");
+			exitMenuItem.addActionListener(evt -> System.exit(0));
 
-					deleteMenuItem = new JMenuItem();
-					jMenu4.add(deleteMenuItem);
-					deleteMenuItem.setText("Delete");
+			jMenu4 = new JMenu();
+			jMenuBar1.add(jMenu4);
+			jMenu4.setText("Bearbeiten");
 
-					jMenu5 = new JMenu();
-					jMenuBar1.add(jMenu5);
-					jMenu5.setText("Hilfe");
-					{
-						helpMenuItem = new JMenuItem();
-						jMenu5.add(helpMenuItem);
-						helpMenuItem.setText("Hilfe");
-						helpMenuItem.addActionListener(
-								evt -> helpMenuItemActionPerformed(evt));
-					}
-				}
-			}
+			pasteMenuItem = new JMenuItem();
+			jMenu4.add(pasteMenuItem);
+			pasteMenuItem.setText("Paste");
+
+			jSeparator1 = new JSeparator();
+			jMenu4.add(jSeparator1);
+
+			deleteMenuItem = new JMenuItem();
+			jMenu4.add(deleteMenuItem);
+			deleteMenuItem.setText("Delete");
+
+			jMenu5 = new JMenu();
+			jMenuBar1.add(jMenu5);
+			jMenu5.setText("Hilfe");
+
+			helpMenuItem = new JMenuItem();
+			jMenu5.add(helpMenuItem);
+			helpMenuItem.setText("Hilfe");
+			helpMenuItem.addActionListener(
+					evt -> helpMenuItemActionPerformed());
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
@@ -147,10 +143,9 @@ public class NimSpiel extends JFrame {
 	}
 
 	/**
-	 * @param evt
-	 *            Parameter event is not used currently
+	 * Action to perform when the help menu is clicked
 	 */
-	void helpMenuItemActionPerformed(ActionEvent evt) {
+	void helpMenuItemActionPerformed() {
 		final JDialog meinDialog = new JDialog(this, "Titel des Dialogs", true);
 		meinDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		meinDialog.setVisible(true);
