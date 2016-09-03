@@ -27,7 +27,7 @@ import javax.swing.border.BevelBorder;
  *
  * @author dkaiser
  */
-public class Kardioide extends JFrame {
+class Kardioide extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static final int DIMENSION = 400;
@@ -35,8 +35,8 @@ public class Kardioide extends JFrame {
 	private static final int LEFT_DIM_L = (int) (LEFT_DIM * 0.06);
 	private static final int LEFT_DIM_LEN = LEFT_DIM - LEFT_DIM_L * 2;
 	private static int anzahl = 5000;
-	static boolean zeichnen = false;
-	private static int radius = 1;
+	private static boolean zeichnen = false;
+	static int radius = 1;
 	private static Color farbe = Color.RED;
 
 	private final Canvas zeichenFlaeche;
@@ -134,9 +134,13 @@ public class Kardioide extends JFrame {
 			super();
 		}
 
+		private int getRadius() {
+			return radius;
+		}
+
 		@Override
 		public void paint(Graphics g) {
-			if (zeichnen) {
+			if (isZeichnen()) {
 				for (int i = 0; i < Kardioide.getAnzahl() + 1; i++) {
 					final double winkel = (double) i / Kardioide.getAnzahl() * 2
 							* Math.PI;
@@ -153,7 +157,7 @@ public class Kardioide extends JFrame {
 		}
 	}
 
-	public static int getAnzahl() {
+	static int getAnzahl() {
 		return anzahl;
 	}
 
@@ -170,11 +174,11 @@ public class Kardioide extends JFrame {
 		kardioide.setVisible(true);
 	}
 
-	public static void setAnzahl(int anzahl) {
+	private static void setAnzahl(int anzahl) {
 		Kardioide.anzahl = anzahl;
 	}
 
-	void farbBoxItemStateChanged(ItemEvent evt) {
+	private void farbBoxItemStateChanged(ItemEvent evt) {
 
 		if (evt.getStateChange() == ItemEvent.SELECTED) {
 			final int selectedIndex = farbBox.getSelectedIndex();
@@ -199,12 +203,8 @@ public class Kardioide extends JFrame {
 		}
 	}
 
-	public static Color getFarbe() {
+	static Color getFarbe() {
 		return farbe;
-	}
-
-	public static int getRadius() {
-		return radius;
 	}
 
 	/**
@@ -217,25 +217,26 @@ public class Kardioide extends JFrame {
 		updateFarbPreview();
 	}
 
-	public static void setFarbe(Color farbe) {
+	private static void setFarbe(Color farbe) {
 		Kardioide.farbe = farbe;
 	}
 
-	public static void setRadius(int radius) {
+	private static void setRadius(int radius) {
 		Kardioide.radius = radius;
 	}
 
 	/**
 	 * @return the zeichnen
 	 */
-	public static boolean isZeichnen() {
+	static boolean isZeichnen() {
 		return zeichnen;
 	}
 
 	/**
-	 * @param zeichnen the zeichnen to set
+	 * @param zeichnen
+	 *            the zeichnen to set
 	 */
-	public static void setZeichnen(boolean zeichnen) {
+	private static void setZeichnen(boolean zeichnen) {
 		Kardioide.zeichnen = zeichnen;
 	}
 

@@ -3,16 +3,16 @@ package swing.graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.border.LineBorder;
 
 public class NimSpiel extends JFrame {
@@ -35,8 +35,8 @@ public class NimSpiel extends JFrame {
 	private JMenuBar jMenuBar1;
 	private JPanel[] Hoelzer;
 
-	public static void main(String[] args) {
-		NimSpiel inst = new NimSpiel("NimSpiel");
+	public static void main(String... args) {
+		final NimSpiel inst = new NimSpiel("NimSpiel");
 		inst.setVisible(true);
 		inst.jSplitPane.setDividerLocation(0.5);
 	}
@@ -44,122 +44,100 @@ public class NimSpiel extends JFrame {
 	public NimSpiel(String s) {
 		super(s);
 		try {
-			{
-				getContentPane().setLayout(null);
-				{
-					this.jPanelBig = new JPanel();
-					BorderLayout jPanel1Layout = new BorderLayout();
-					this.jPanelBig.setLayout(jPanel1Layout);
-					getContentPane().add(this.jPanelBig);
-					this.jPanelBig.setBounds(112, 0, 280, 252);
-					{
-						this.jPanelUpper = new JPanel();
-						this.jPanelUpper.setPreferredSize(new java.awt.Dimension(250, 125));
-						this.jPanelUpper.setSize(250, 125);
-						this.jPanelLower = new JPanel();
-						this.jPanelLower.setPreferredSize(new java.awt.Dimension(268, 233));
-						this.jPanelLower.setSize(250, 125);
-						this.jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.jPanelUpper, this.jPanelLower);
-						this.jPanelBig.add(this.jSplitPane, BorderLayout.CENTER);
-						this.jSplitPane.setPreferredSize(new java.awt.Dimension(252, 252));
-						this.jSplitPane.setOneTouchExpandable(true);
-						this.jSplitPane.setVisible(true);
 
-						this.Hoelzer = new JPanel[40];
-						for (int i = 0; i < 20; i++) {
-							this.Hoelzer[i] = new JPanel();
-							this.Hoelzer[i].setBackground(Color.yellow);
-							this.Hoelzer[i].setBorder(new LineBorder(Color.black));
-							this.Hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
-							this.jPanelUpper.add(this.Hoelzer[i]);
-						}
-						for (int i = 20; i < 40; i++) {
-							this.Hoelzer[i] = new JPanel();
-							this.Hoelzer[i].setBackground(Color.yellow);
-							this.Hoelzer[i].setBorder(new LineBorder(Color.black));
-							this.Hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
-							this.jPanelLower.add(this.Hoelzer[i]);
-						}
-					}
-				}
+			getContentPane().setLayout(null);
+
+			jPanelBig = new JPanel();
+			final BorderLayout jPanel1Layout = new BorderLayout();
+			jPanelBig.setLayout(jPanel1Layout);
+			getContentPane().add(jPanelBig);
+			jPanelBig.setBounds(112, 0, 280, 252);
+
+			jPanelUpper = new JPanel();
+			jPanelUpper.setPreferredSize(new java.awt.Dimension(250, 125));
+			jPanelUpper.setSize(250, 125);
+			jPanelLower = new JPanel();
+			jPanelLower.setPreferredSize(new java.awt.Dimension(268, 233));
+			jPanelLower.setSize(250, 125);
+			jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jPanelUpper,
+					jPanelLower);
+			jPanelBig.add(jSplitPane, BorderLayout.CENTER);
+			jSplitPane.setPreferredSize(new java.awt.Dimension(252, 252));
+			jSplitPane.setOneTouchExpandable(true);
+			jSplitPane.setVisible(true);
+
+			Hoelzer = new JPanel[40];
+			for (int i = 0; i < 20; i++) {
+				Hoelzer[i] = new JPanel();
+				Hoelzer[i].setBackground(Color.yellow);
+				Hoelzer[i].setBorder(new LineBorder(Color.black));
+				Hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
+				jPanelUpper.add(Hoelzer[i]);
 			}
+			for (int i = 20; i < 40; i++) {
+				Hoelzer[i] = new JPanel();
+				Hoelzer[i].setBackground(Color.yellow);
+				Hoelzer[i].setBorder(new LineBorder(Color.black));
+				Hoelzer[i].setPreferredSize(new java.awt.Dimension(8, 100));
+				jPanelLower.add(Hoelzer[i]);
+			}
+
 			this.setSize(400, 350);
 			{
-				this.jMenuBar1 = new JMenuBar();
-				setJMenuBar(this.jMenuBar1);
+				jMenuBar1 = new JMenuBar();
+				setJMenuBar(jMenuBar1);
 				{
-					this.jMenu3 = new JMenu();
-					this.jMenuBar1.add(this.jMenu3);
-					this.jMenu3.setText("Datei");
+					jMenu3 = new JMenu();
+					jMenuBar1.add(jMenu3);
+					jMenu3.setText("Datei");
 					{
-						this.newFileMenuItem = new JMenuItem();
-						this.jMenu3.add(this.newFileMenuItem);
-						this.newFileMenuItem.setText("Neues Spiel");
-						this.newFileMenuItem.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent evt) {
-								newFileMenuItemActionPerformed(evt);
-							}
-						});
+						newFileMenuItem = new JMenuItem();
+						jMenu3.add(newFileMenuItem);
+						newFileMenuItem.setText("Neues Spiel");
+						newFileMenuItem.addActionListener(
+								NimSpiel::newFileMenuItemActionPerformed);
+
+						openFileMenuItem = new JMenuItem();
+						jMenu3.add(openFileMenuItem);
+						openFileMenuItem.setText("Open");
+
+						jSeparator2 = new JSeparator();
+						jMenu3.add(jSeparator2);
+
+						exitMenuItem = new JMenuItem();
+						jMenu3.add(exitMenuItem);
+						exitMenuItem.setText("Beenden");
+						exitMenuItem.addActionListener(evt -> System.exit(0));
 					}
+
+					jMenu4 = new JMenu();
+					jMenuBar1.add(jMenu4);
+					jMenu4.setText("Bearbeiten");
+
+					pasteMenuItem = new JMenuItem();
+					jMenu4.add(pasteMenuItem);
+					pasteMenuItem.setText("Paste");
+
+					jSeparator1 = new JSeparator();
+					jMenu4.add(jSeparator1);
+
+					deleteMenuItem = new JMenuItem();
+					jMenu4.add(deleteMenuItem);
+					deleteMenuItem.setText("Delete");
+
+					jMenu5 = new JMenu();
+					jMenuBar1.add(jMenu5);
+					jMenu5.setText("Hilfe");
 					{
-						this.openFileMenuItem = new JMenuItem();
-						this.jMenu3.add(this.openFileMenuItem);
-						this.openFileMenuItem.setText("Open");
-					}
-					{
-						this.jSeparator2 = new JSeparator();
-						this.jMenu3.add(this.jSeparator2);
-					}
-					{
-						this.exitMenuItem = new JMenuItem();
-						this.jMenu3.add(this.exitMenuItem);
-						this.exitMenuItem.setText("Beenden");
-						this.exitMenuItem.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent evt) {
-								System.exit(0);
-							}
-						});
-					}
-				}
-				{
-					this.jMenu4 = new JMenu();
-					this.jMenuBar1.add(this.jMenu4);
-					this.jMenu4.setText("Bearbeiten");
-					{
-						this.pasteMenuItem = new JMenuItem();
-						this.jMenu4.add(this.pasteMenuItem);
-						this.pasteMenuItem.setText("Paste");
-					}
-					{
-						this.jSeparator1 = new JSeparator();
-						this.jMenu4.add(this.jSeparator1);
-					}
-					{
-						this.deleteMenuItem = new JMenuItem();
-						this.jMenu4.add(this.deleteMenuItem);
-						this.deleteMenuItem.setText("Delete");
-					}
-				}
-				{
-					this.jMenu5 = new JMenu();
-					this.jMenuBar1.add(this.jMenu5);
-					this.jMenu5.setText("Hilfe");
-					{
-						this.helpMenuItem = new JMenuItem();
-						this.jMenu5.add(this.helpMenuItem);
-						this.helpMenuItem.setText("Hilfe");
-						this.helpMenuItem.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent evt) {
-								helpMenuItemActionPerformed(evt);
-							}
-						});
+						helpMenuItem = new JMenuItem();
+						jMenu5.add(helpMenuItem);
+						helpMenuItem.setText("Hilfe");
+						helpMenuItem.addActionListener(
+								evt -> helpMenuItemActionPerformed(evt));
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -173,7 +151,7 @@ public class NimSpiel extends JFrame {
 	 *            Parameter event is not used currently
 	 */
 	void helpMenuItemActionPerformed(ActionEvent evt) {
-		JDialog meinDialog = new JDialog(this, "Titel des Dialogs", true);
+		final JDialog meinDialog = new JDialog(this, "Titel des Dialogs", true);
 		meinDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		meinDialog.setVisible(true);
 	}

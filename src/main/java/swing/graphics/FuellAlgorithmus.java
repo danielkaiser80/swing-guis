@@ -2,50 +2,64 @@ package swing.graphics;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Graphics;
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+/**
+ * Example class to show an algorithm for filling draw objects
+ * 
+ * @author dkaiser
+ *
+ */
 public class FuellAlgorithmus extends JFrame {
 
-	private class zeichenCanvas extends Canvas { // RGBCanvas {
+	private class ZeichenCanvas extends Canvas {
 		private static final long serialVersionUID = 1L;
 
-		public zeichenCanvas() {
+		public ZeichenCanvas() {
 			super();
 		}
 
 		@Override
 		public void paint(final Graphics g) {
-			int x = 100;
-			int y = 100;
+			final int x = 100;
+			final int y = 100;
 			g.drawLine(x, y, x + 100, y);
 			g.drawLine(x, y + 100, x + 100, y + 100);
 			g.drawLine(x + 100, y, x + 100, y + 100);
 			g.drawLine(x, y, x, y + 100);
-			x = 117;
-			y = 128;
 		}
 	}
 
 	private static final long serialVersionUID = 1L;
-	private Canvas zeichenFlaeche;
-	public Color Farbe = Color.red;
+	private final Canvas zeichenFlaeche;
 
+	/**
+	 * Create a new <code>FuellAlgorithmus</code> object
+	 * 
+	 * @param name
+	 */
 	public FuellAlgorithmus(String name) {
 		super(name);
 
 		this.setSize(420, 300);
-		this.zeichenFlaeche = new zeichenCanvas();
-		getContentPane().add(this.zeichenFlaeche, BorderLayout.EAST);
-		this.zeichenFlaeche.setSize(300, 300);
-		this.zeichenFlaeche.setFocusTraversalKeysEnabled(false);
+		zeichenFlaeche = new ZeichenCanvas();
+		getContentPane().add(zeichenFlaeche, BorderLayout.EAST);
+		zeichenFlaeche.setSize(300, 300);
+		zeichenFlaeche.setFocusTraversalKeysEnabled(false);
 
 	}
 
+	/**
+	 * Main method to start the program
+	 * 
+	 * @param args
+	 *            not used
+	 */
 	public static void main(String... args) {
-		FuellAlgorithmus frame = new FuellAlgorithmus("Füllalgorithmus");
+		final FuellAlgorithmus frame = new FuellAlgorithmus("Füllalgorithmus");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
