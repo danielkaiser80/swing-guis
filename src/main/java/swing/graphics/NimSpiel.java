@@ -35,14 +35,22 @@ public class NimSpiel extends JFrame {
 	private JMenuBar jMenuBar1;
 	private JPanel[] hoelzer;
 
+	/**
+	 * Main method to start the program
+	 * @param args not used
+	 */
 	public static void main(String... args) {
 		final NimSpiel inst = new NimSpiel("NimSpiel");
 		inst.setVisible(true);
 		inst.jSplitPane.setDividerLocation(0.5);
 	}
 
-	public NimSpiel(String s) {
-		super(s);
+	/**
+	 * Constructor for a new nim game
+	 * @param title the title of the Frame
+	 */
+	public NimSpiel(String title) {
+		super(title);
 		try {
 
 			getContentPane().setLayout(null);
