@@ -1,34 +1,3 @@
-/*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package swing.laf;
 
 import java.awt.BorderLayout;
@@ -38,9 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-/*
- * LookAndFeelDemo.java is a Java SE 6 example.
- */
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -53,7 +19,18 @@ import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * LookAndFeelDemo.java is a Java SE 6 example, updated for Java 8
+ *
+ * @author dkaiser
+ */
 public class LookAndFeelDemo implements ActionListener {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LookAndFeelDemo.class);
+
 	private static final String DEFAULT_LAF = "Using the default look and feel.";
 	private static String labelPrefix = "Number of button clicks: ";
 	private int numClicks = 0;
@@ -74,6 +51,11 @@ public class LookAndFeelDemo implements ActionListener {
 	// Valid values are: "DefaultMetal" and "Ocean"
 	static final String THEME = "Ocean";
 
+	/**
+	 * Create the components for the main content pane
+	 *
+	 * @return components for the content pane
+	 */
 	public Component createComponents() {
 		final JButton button = new JButton("I'm a Swing button!");
 		button.setMnemonic(KeyEvent.VK_I);
@@ -104,56 +86,60 @@ public class LookAndFeelDemo implements ActionListener {
 	}
 
 	private static void initLookAndFeel() {
-		System.out.println("Init...");
+		LOGGER.info("Init...");
 
 		if (LOOKANDFEEL != null) {
 			final String lookAndFeel = getLookandFeel(LOOKANDFEEL);
 
 			try {
 
-				System.out.println("Setting laf... " + lookAndFeel);
+				LOGGER.info("Setting laf... " + lookAndFeel);
 
 				UIManager.setLookAndFeel(lookAndFeel);
 
 				// If L&F = "Metal", set the theme
 
-				if (LOOKANDFEEL.equals("Metal")) {
-					if (THEME.equals("DefaultMetal"))
-						MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-					else if (THEME.equals("Ocean"))
-						MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-
+				if ("Metal".equals(LOOKANDFEEL)) {
+					setTheme();
 					UIManager.setLookAndFeel(new MetalLookAndFeel());
 				}
 			}
 
 			catch (final ClassNotFoundException e) {
-				System.err.println(
+				LOGGER.error(
 						"Couldn't find class for specified look and feel:" + lookAndFeel);
-				System.err.println("Did you include the L&F library in the class path?");
-				System.err.println(DEFAULT_LAF);
-				System.err.println(e.getMessage());
+				LOGGER.error("Did you include the L&F library in the class path?"
+						+ DEFAULT_LAF);
+				LOGGER.error(e.getMessage(), e);
 			}
 
 			catch (final UnsupportedLookAndFeelException e) {
-				System.err.println("Can't use the specified look and feel (" + lookAndFeel
-						+ ") on this platform.");
-				System.err.println(DEFAULT_LAF);
-				System.err.println(e.getMessage());
+				LOGGER.error("Can't use the specified look and feel (" + lookAndFeel
+						+ ") on this platform." + DEFAULT_LAF);
+				LOGGER.error(e.getMessage(), e);
 			}
 
 			catch (final Exception e) {
-				System.err.println("Couldn't get specified look and feel (" + lookAndFeel
-						+ "), for some reason.");
-				System.err.println(DEFAULT_LAF);
-				System.err.println(e.getMessage());
+				LOGGER.error("Couldn't get specified look and feel (" + lookAndFeel
+						+ "), for some reason." + DEFAULT_LAF);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}
 
 	/**
+	 *
+	 */
+	private static void setTheme() {
+		if ("DefaultMetal".equals(THEME))
+			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+		else if ("Ocean".equals(THEME))
+			MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+	}
+
+	/**
 	 * Gets the class name of the Look and Feel specified
-	 * 
+	 *
 	 * @return the look and feel as String
 	 */
 	private static String getLookandFeel(String laf) {
@@ -181,8 +167,7 @@ public class LookAndFeelDemo implements ActionListener {
 			break;
 
 		default:
-			System.err.println(
-					"Unexpected value of LOOKANDFEEL specified: " + laf);
+			LOGGER.error("Unexpected value of LOOKANDFEEL specified: " + laf);
 			lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
 			break;
 		}
@@ -209,7 +194,7 @@ public class LookAndFeelDemo implements ActionListener {
 		final Component contents = app.createComponents();
 		frame.getContentPane().add(contents, BorderLayout.CENTER);
 
-		System.out.println("Showing the Frame...");
+		LOGGER.info("Showing the Frame...");
 
 		// Display the window.
 		frame.pack();
@@ -218,7 +203,9 @@ public class LookAndFeelDemo implements ActionListener {
 
 	/**
 	 * Main method to start the program
-	 * @param args not used
+	 *
+	 * @param args
+	 *            not used
 	 */
 	public static void main(String... args) {
 		// Schedule a job for the event dispatch thread:

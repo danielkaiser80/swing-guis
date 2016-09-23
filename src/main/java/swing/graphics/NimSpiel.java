@@ -15,8 +15,19 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * base class for the Nim game - not final implementation
+ * @author dkaiser
+ *
+ */
 public class NimSpiel extends JFrame {
 	private static final long serialVersionUID = -2039933990791771786L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(NimSpiel.class);
+	
 	private JMenuItem helpMenuItem;
 	private JMenu jMenu5;
 	private JMenuItem deleteMenuItem;
@@ -34,17 +45,7 @@ public class NimSpiel extends JFrame {
 	private JMenu jMenu3;
 	private JMenuBar jMenuBar1;
 	private JPanel[] hoelzer;
-
-	/**
-	 * Main method to start the program
-	 * @param args not used
-	 */
-	public static void main(String... args) {
-		final NimSpiel inst = new NimSpiel("NimSpiel");
-		inst.setVisible(true);
-		inst.jSplitPane.setDividerLocation(0.5);
-	}
-
+	
 	/**
 	 * Constructor for a new nim game
 	 * @param title the title of the Frame
@@ -142,12 +143,24 @@ public class NimSpiel extends JFrame {
 			helpMenuItem.addActionListener(
 					evt -> helpMenuItemActionPerformed());
 		} catch (final Exception e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(),e);
 		}
 	}
 
+	/**
+	 * Main method to start the program
+	 * @param args not used
+	 */
+	public static void main(String... args) {
+		final NimSpiel inst = new NimSpiel("NimSpiel");
+		inst.setVisible(true);
+		inst.jSplitPane.setDividerLocation(0.5);
+	}
+
+	
+
 	static void newFileMenuItemActionPerformed(ActionEvent evt) {
-		System.out.println("newFileMenuItem.actionPerformed, event=" + evt);
+		LOGGER.info("newFileMenuItem.actionPerformed, event=" + evt);
 	}
 
 	/**
