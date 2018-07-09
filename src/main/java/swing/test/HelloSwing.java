@@ -1,27 +1,26 @@
 package swing.test;
 
-//An applet that appears on the page as a button that says
-// "Click Me!".  When the button is clicked, an informational
-// dialog box appears to say Hello from Swing.
+// Event handling class are defined here.
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*; // Swing GUI classes are defined here.
-import java.awt.event.*; // Event handling class are defined here.
+// Swing GUI classes are defined here.
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
-public class HelloSwing extends JApplet implements ActionListener {
+public class HelloSwing extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = -6208364462383736254L;
 
-	@Override
-	public void init() {
-		// This method is called by the system before the applet
-		// appears. It is used here to create the button and add
-		// it to the "content pane" of the JApplet. The applet
-		// is also registered as an ActionListener for the button.
+	public HelloSwing(String name) {
+		super(name);
 
 		JButton bttn = new JButton("Click Me!");
 		bttn.addActionListener(this);
 		getContentPane().add(bttn);
-	} // end init()
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
@@ -34,6 +33,20 @@ public class HelloSwing extends JApplet implements ActionListener {
 		// dismiss the dialog box.
 		String title = "Greetings"; // Shown in title bar of dialog box.
 		String message = "Hello from the Swing User Interface Library.";
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-	} // end actionPerformed()
-} // end class HelloSwing
+		JOptionPane.showMessageDialog(null, message, title,
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Main method to start the program
+	 * 
+	 * @param args
+	 *            not used
+	 */
+	public static void main(String... args) {
+		final HelloSwing frame = new HelloSwing("Hello Swing");
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+	}
+}

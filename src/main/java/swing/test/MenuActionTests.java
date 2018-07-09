@@ -9,7 +9,8 @@ public class MenuActionTests extends JFrame {
 
 	private static final long serialVersionUID = 4835173282511924673L;
 	private Font font = new Font("serif", Font.ITALIC + Font.BOLD, 36);
-	protected Action newAction, openAction, closeAction, saveAction, saveAsAction, undoAction, cutAction, copyAction,
+	protected Action newAction, openAction, closeAction, saveAction, saveAsAction,
+			undoAction, cutAction, copyAction,
 			pasteAction, clearAction, selectAllAction, quitAction;
 	static final JMenuBar mainMenuBar = new JMenuBar();
 	protected JMenu fileMenu, editMenu;
@@ -36,20 +37,29 @@ public class MenuActionTests extends JFrame {
 	}
 
 	public void createActions() {
-		int shortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+		int shortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 
 		// Create actions that can be used by menus, buttons, toolbars, etc.
-		this.newAction = new newActionClass("Neu...", KeyStroke.getKeyStroke(KeyEvent.VK_N, shortcutKeyMask));
-		this.openAction = new openActionClass("Öffnen", KeyStroke.getKeyStroke(KeyEvent.VK_O, shortcutKeyMask));
-		this.closeAction = new closeActionClass("Schließen", KeyStroke.getKeyStroke(KeyEvent.VK_W, shortcutKeyMask));
-		this.saveAction = new saveActionClass("Speichern", KeyStroke.getKeyStroke(KeyEvent.VK_S, shortcutKeyMask));
+		this.newAction = new newActionClass("Neu...",
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, shortcutKeyMask));
+		this.openAction = new openActionClass("Öffnen",
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, shortcutKeyMask));
+		this.closeAction = new closeActionClass("Schließen",
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, shortcutKeyMask));
+		this.saveAction = new saveActionClass("Speichern",
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, shortcutKeyMask));
 		this.saveAsAction = new saveAsActionClass("Speichern unter");
-		this.quitAction = new quitActionClass("Beenden", KeyStroke.getKeyStroke(KeyEvent.VK_Q, shortcutKeyMask));
+		this.quitAction = new quitActionClass("Beenden",
+				KeyStroke.getKeyStroke(KeyEvent.VK_Q, shortcutKeyMask));
 
-		this.undoAction = new undoActionClass("Rückgängig", KeyStroke.getKeyStroke(KeyEvent.VK_Z, shortcutKeyMask));
-		this.cutAction = new cutActionClass("Ausschneiden", KeyStroke.getKeyStroke(KeyEvent.VK_X, shortcutKeyMask));
-		this.copyAction = new copyActionClass("Kopieren", KeyStroke.getKeyStroke(KeyEvent.VK_C, shortcutKeyMask));
-		this.pasteAction = new pasteActionClass("Einfügen", KeyStroke.getKeyStroke(KeyEvent.VK_V, shortcutKeyMask));
+		this.undoAction = new undoActionClass("Rückgängig",
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, shortcutKeyMask));
+		this.cutAction = new cutActionClass("Ausschneiden",
+				KeyStroke.getKeyStroke(KeyEvent.VK_X, shortcutKeyMask));
+		this.copyAction = new copyActionClass("Kopieren",
+				KeyStroke.getKeyStroke(KeyEvent.VK_C, shortcutKeyMask));
+		this.pasteAction = new pasteActionClass("Einfügen",
+				KeyStroke.getKeyStroke(KeyEvent.VK_V, shortcutKeyMask));
 		this.clearAction = new clearActionClass("Löschen");
 		this.selectAllAction = new selectAllActionClass("Alles auswählen",
 				KeyStroke.getKeyStroke(KeyEvent.VK_A, shortcutKeyMask));
@@ -302,7 +312,8 @@ public class MenuActionTests extends JFrame {
 
 		this.textArea = new JTextArea(5, 20);
 		this.textArea.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(this.textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane scrollPane = new JScrollPane(this.textArea,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -327,5 +338,4 @@ public class MenuActionTests extends JFrame {
 		MenuActionTests test = new MenuActionTests();
 		test.setVisible(true);
 	}
-
 }
