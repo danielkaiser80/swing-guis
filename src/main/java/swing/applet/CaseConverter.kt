@@ -1,16 +1,9 @@
-package swing.applet;
+package swing.applet
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import java.awt.BorderLayout
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import javax.swing.*
 
 /**
  * Class CaseConverter - A simple applet that takes input from a text field and
@@ -25,94 +18,80 @@ import javax.swing.WindowConstants;
  *
  * @version 2004-08-04
  */
-public class CaseConverter extends JFrame implements ActionListener {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 176518414553115330L;
-	private JTextField inputField;
-	private static final String UPPERCASE = "UPPERCASE";
-	private static final String LOWERCASE = "lowercase";
-	private static final String CLEAR = "Clear";
+class CaseConverter(name: String) : JFrame(name), ActionListener {
 
-	/**
-	 * Create a new <code>FuellAlgorithmus</code> object
-	 * 
-	 * @param name
-	 */
-	public CaseConverter(String name) {
-		super(name);
-		// GUI elements are added to the applet's content pane, so get it for
-		// us.
-		final Container contentPane = getContentPane();
+    private val UPPERCASE = "UPPERCASE"
+    private val LOWERCASE = "lowercase"
+    private val CLEAR = "Clear"
 
-		// set a layout with some spacing
-		contentPane.setLayout(new BorderLayout(12, 12));
+    private val inputField: JTextField
 
-		// add the title label
-		final JLabel title = new JLabel("Case Converter");
-		contentPane.add(title, BorderLayout.NORTH);
+    init {
+        // GUI elements are added to the applet's content pane, so get it for
+        // us.
+        val contentPane = contentPane
 
-		// create the center part with prompt and text field and add it
-		final JPanel centerPanel = new JPanel();
-		final JLabel prompt = new JLabel("Enter a string:");
-		centerPanel.add(prompt);
-		inputField = new JTextField(16);
-		centerPanel.add(inputField);
+        // set a layout with some spacing
+        contentPane.layout = BorderLayout(12, 12)
 
-		contentPane.add(centerPanel, BorderLayout.CENTER);
+        // add the title label
+        val title = JLabel("Case Converter")
+        contentPane.add(title, BorderLayout.NORTH)
 
-		// make a panel for the buttons
-		final JPanel buttonPanel = new JPanel();
+        // create the center part with prompt and text field and add it
+        val centerPanel = JPanel()
+        val prompt = JLabel("Enter a string:")
+        centerPanel.add(prompt)
+        inputField = JTextField(16)
+        centerPanel.add(inputField)
 
-		// add the buttons to the button panel
-		final JButton uppercase = new JButton(UPPERCASE);
-		uppercase.addActionListener(this);
-		buttonPanel.add(uppercase);
+        contentPane.add(centerPanel, BorderLayout.CENTER)
 
-		final JButton lowercase = new JButton(LOWERCASE);
-		lowercase.addActionListener(this);
-		buttonPanel.add(lowercase);
+        // make a panel for the buttons
+        val buttonPanel = JPanel()
 
-		final JButton clear = new JButton(CLEAR);
-		clear.addActionListener(this);
-		buttonPanel.add(clear);
+        // add the buttons to the button panel
+        val uppercase = JButton(UPPERCASE)
+        uppercase.addActionListener(this)
+        buttonPanel.add(uppercase)
 
-		// add the buttons panel to the content pane
-		contentPane.add(buttonPanel, BorderLayout.SOUTH);
-	}
+        val lowercase = JButton(LOWERCASE)
+        lowercase.addActionListener(this)
+        buttonPanel.add(lowercase)
 
-	/**
-	 * ActionListener Interface method. Called when action events occur with
-	 * registered components that can fire action events.
-	 *
-	 * @param evt
-	 *            the ActionEvent object created by the event
-	 */
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		final String command = evt.getActionCommand();
-		// if clear button pressed
-		if (CLEAR.equals(command))
-			inputField.setText("");
-		// uppercase button pressed
-		else if (UPPERCASE.equals(command))
-			inputField.setText(inputField.getText().toUpperCase());
-		// lowercase button pressed
-		else if (LOWERCASE.equals(command))
-			inputField.setText(inputField.getText().toLowerCase());
-	}
+        val clear = JButton(CLEAR)
+        clear.addActionListener(this)
+        buttonPanel.add(clear)
 
-	/**
-	 * Main method to start the program
-	 * 
-	 * @param args
-	 *            not used
-	 */
-	public static void main(String... args) {
-		final CaseConverter frame = new CaseConverter("CaseConverter");
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
+        // add the buttons panel to the content pane
+        contentPane.add(buttonPanel, BorderLayout.SOUTH)
+    }
+
+    /**
+     * ActionListener Interface method. Called when action events occur with
+     * registered components that can fire action events.
+     *
+     * @param evt
+     * the ActionEvent object created by the event
+     */
+    override fun actionPerformed(evt: ActionEvent) {
+        val command = evt.actionCommand
+        // if clear button pressed
+        if (CLEAR == command)
+            inputField.text = ""
+        else if (UPPERCASE == command)
+            inputField.text = inputField.text.toUpperCase()
+        else if (LOWERCASE == command)
+            inputField.text = inputField.text.toLowerCase()// lowercase button pressed
+        // uppercase button pressed
+    }
+
+
+}
+
+fun main(args: Array<String>) {
+    val frame = CaseConverter("CaseConverter")
+    frame.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+    frame.pack()
+    frame.isVisible = true
 }
