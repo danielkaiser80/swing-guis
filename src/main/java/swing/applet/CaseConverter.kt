@@ -3,7 +3,12 @@ package swing.applet
 import java.awt.BorderLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.util.*
 import javax.swing.*
+
+private const val UPPERCASE = "UPPERCASE"
+private const val LOWERCASE = "lowercase"
+private const val CLEAR = "Clear"
 
 /**
  * Class CaseConverter - A simple applet that takes input from a text field and
@@ -12,25 +17,18 @@ import javax.swing.*
  *
  * Aug 2004: Updated from Applet to JApplet (mik)
  * Jul 2018: removed JApplet stuff
+ * sometime later: made Kotlin verion
  *
  * @author Bruce Quig
  * @author Michael Kölling
+ * @author Daniel Kaiser
  *
- * @version 2004-08-04
  */
 class CaseConverter(name: String) : JFrame(name), ActionListener {
-
-    private val UPPERCASE = "UPPERCASE"
-    private val LOWERCASE = "lowercase"
-    private val CLEAR = "Clear"
 
     private val inputField: JTextField
 
     init {
-        // GUI elements are added to the applet's content pane, so get it for
-        // us.
-        val contentPane = contentPane
-
         // set a layout with some spacing
         contentPane.layout = BorderLayout(12, 12)
 
@@ -75,23 +73,23 @@ class CaseConverter(name: String) : JFrame(name), ActionListener {
      * the ActionEvent object created by the event
      */
     override fun actionPerformed(evt: ActionEvent) {
-        val command = evt.actionCommand
-        // if clear button pressed
-        if (CLEAR == command)
-            inputField.text = ""
-        else if (UPPERCASE == command)
-            inputField.text = inputField.text.toUpperCase()
-        else if (LOWERCASE == command)
-            inputField.text = inputField.text.toLowerCase()// lowercase button pressed
-        // uppercase button pressed
+        val locale = Locale.getDefault()
+        evt.actionCommand.let {
+            inputField.text = when (it) {
+                // if clear button pressed
+                CLEAR -> ""
+                // uppercase button pressed
+                UPPERCASE -> inputField.text.uppercase(locale)
+                // lowercase button pressed
+                LOWERCASE -> inputField.text.lowercase(locale)
+                else -> inputField.text
+            }
+        }
     }
-
-
 }
 
-fun main(args: Array<String>) {
-    val frame = CaseConverter("CaseConverter")
-    frame.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
-    frame.pack()
-    frame.isVisible = true
+fun main() = CaseConverter("CaseConverter").let {
+    it.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+    it.pack()
+    it.isVisible = true
 }
