@@ -1,12 +1,12 @@
 package swing.graphics;
 
+import swing.graphics.util.ClickedListener;
+
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.Serial;
 
 import javax.swing.BorderFactory;
@@ -36,12 +36,12 @@ class Kardioide extends JFrame {
     private static final int LEFT_DIM = 120;
     private static final int LEFT_DIM_L = (int) (LEFT_DIM * 0.06);
     private static final int LEFT_DIM_LEN = LEFT_DIM - LEFT_DIM_L * 2;
-    private static int anzahl = 5000;
+    private static int amountOfPoints = 5000;
     private static boolean draw = false;
     static int radius = 1;
     private static Color color = Color.RED;
 
-    private final Canvas zeichenFlaeche;
+    private final Canvas drawingArea;
     private final Canvas colorPreview;
     private final JSpinner calcSpinner;
     private final JSpinner radiusSpinner;
@@ -54,10 +54,10 @@ class Kardioide extends JFrame {
         final BorderLayout thisLayout = new BorderLayout();
         getContentPane().setLayout(thisLayout);
 
-        zeichenFlaeche = new ZeichenCanvas();
-        getContentPane().add(zeichenFlaeche, BorderLayout.EAST);
-        zeichenFlaeche.setSize(DIMENSION, DIMENSION);
-        zeichenFlaeche.setFocusTraversalKeysEnabled(false);
+        drawingArea = new DrawingCanvas();
+        getContentPane().add(drawingArea, BorderLayout.EAST);
+        drawingArea.setSize(DIMENSION, DIMENSION);
+        drawingArea.setFocusTraversalKeysEnabled(false);
 
         JPanel leftPanel = new JPanel();
         getContentPane().add(leftPanel, BorderLayout.WEST);
@@ -78,44 +78,35 @@ class Kardioide extends JFrame {
         radiusSpinner.setBounds(LEFT_DIM_L, 42, 63, 28);
         radiusSpinner.setValue(DIMENSION / 3);
 
-        final ComboBoxModel<String> farbBoxModel = new DefaultComboBoxModel<>(
-                new String[]{"Rot", "Grün", "Gelb", "Blau", "Schwarz", "andere"});
+        final ComboBoxModel<String> colorBoxModel = new DefaultComboBoxModel<>(
+                new String[]{"Red", "Green", "Yellow", "Blue", "Black", "Other"});
         colorBox = new JComboBox<>();
         leftPanel.add(colorBox);
-        colorBox.setModel(farbBoxModel);
+        colorBox.setModel(colorBoxModel);
         colorBox.setBounds(LEFT_DIM_L, 126, LEFT_DIM_LEN, 28);
-        colorBox.addItemListener(this::farbBoxItemStateChanged);
+        colorBox.addItemListener(this::colorBoxItemStateChanged);
 
-        JLabel calcLabel = new JLabel();
+        final JLabel calcLabel = new JLabel();
         leftPanel.add(calcLabel);
-        calcLabel.setText("Anzahl Punkte:");
+        calcLabel.setText("Amount of Points:");
         calcLabel.setBounds(LEFT_DIM_L, 221, 100, 14);
 
         calcSpinner = new JSpinner(new SpinnerNumberModel(1000, 0, 10000, 10));
         leftPanel.add(calcSpinner);
         calcSpinner.setBounds(LEFT_DIM_L, 242, 100, 28);
-        calcSpinner.setValue(getAnzahl());
+        calcSpinner.setValue(getAmountOfPoints());
 
         JButton startButton = new JButton();
         leftPanel.add(startButton);
         startButton.setText("Start");
         startButton.setBounds(28, DIMENSION - 50, 63, 28);
-        startButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                startButtonMouseClicked();
-            }
-        });
+
+        startButton.addMouseListener((ClickedListener) ((evt) -> startButtonMouseClicked()));
         JButton otherButton = new JButton();
         leftPanel.add(otherButton);
-        otherButton.setText("andere...");
+        otherButton.setText("other...");
         otherButton.setBounds(LEFT_DIM_L, 161, LEFT_DIM_LEN, 28);
-        otherButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                otherButtonMouseClicked();
-            }
-        });
+        otherButton.addMouseListener((ClickedListener) ((evt) -> otherButtonMouseClicked()));
 
         colorPreview = new Canvas();
         leftPanel.add(colorPreview);
@@ -123,12 +114,12 @@ class Kardioide extends JFrame {
         colorPreview.setBackground(Color.RED);
     }
 
-    private static class ZeichenCanvas extends Canvas {
-        // zeichnet die Kardioide
+    private static class DrawingCanvas extends Canvas {
+
         @Serial
         private static final long serialVersionUID = 1L;
 
-        public ZeichenCanvas() {
+        public DrawingCanvas() {
             super();
         }
 
@@ -139,14 +130,13 @@ class Kardioide extends JFrame {
         @Override
         public void paint(Graphics g) {
             if (isDraw()) {
-                for (int i = 0; i < Kardioide.getAnzahl() + 1; i++) {
-                    final double winkel = (double) i / Kardioide.getAnzahl() * 2
-                            * Math.PI;
-                    final int x = (int) (getRadius() * Math.cos(winkel)
-                            * (1 + Math.cos(winkel)))
+                for (int i = 0; i < Kardioide.getAmountOfPoints() + 1; i++) {
+                    final double angle = (double) i / Kardioide.getAmountOfPoints() * 2 * Math.PI;
+                    final int x = (int) (getRadius() * Math.cos(angle)
+                            * (1 + Math.cos(angle)))
                             + DIMENSION / 4;
-                    final int y = (int) (getRadius() * Math.sin(winkel)
-                            * (1 + Math.cos(winkel)))
+                    final int y = (int) (getRadius() * Math.sin(angle)
+                            * (1 + Math.cos(angle)))
                             + DIMENSION / 2;
                     g.setColor(getColor());
                     g.drawLine(x, y, x, y);
@@ -155,8 +145,8 @@ class Kardioide extends JFrame {
         }
     }
 
-    static int getAnzahl() {
-        return anzahl;
+    static int getAmountOfPoints() {
+        return amountOfPoints;
     }
 
     /**
@@ -171,11 +161,11 @@ class Kardioide extends JFrame {
         kardioide.setVisible(true);
     }
 
-    private static void setAnzahl(int anzahl) {
-        Kardioide.anzahl = anzahl;
+    private static void setAmountOfPoints(int amountOfPoints) {
+        Kardioide.amountOfPoints = amountOfPoints;
     }
 
-    private void farbBoxItemStateChanged(ItemEvent evt) {
+    private void colorBoxItemStateChanged(ItemEvent evt) {
 
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             final int selectedIndex = colorBox.getSelectedIndex();
@@ -195,11 +185,10 @@ class Kardioide extends JFrame {
     }
 
     /**
-     * another mouse button was clicked
+     * Another mouse button was clicked.
      */
     void otherButtonMouseClicked() {
-        setColor(JColorChooser.showDialog(Kardioide.this,
-                "Bitte wählen Sie die Farbe aus!", Color.WHITE));
+        setColor(JColorChooser.showDialog(Kardioide.this, "Please choose the color!", Color.WHITE));
         colorBox.setSelectedIndex(5);
         updateColorPreview();
     }
@@ -212,17 +201,11 @@ class Kardioide extends JFrame {
         Kardioide.radius = radius;
     }
 
-    /**
-     * @return the zeichnen
-     */
     static boolean isDraw() {
         return draw;
     }
 
-    /**
-     *
-     */
-    private static void setZeichnen() {
+    private static void setDraw() {
         Kardioide.draw = true;
     }
 
@@ -230,10 +213,10 @@ class Kardioide extends JFrame {
      * method to draw the Kardioide
      */
     void startButtonMouseClicked() {
-        setRadius(Integer.parseInt(radiusSpinner.getValue().toString()));
-        setAnzahl(Integer.parseInt(calcSpinner.getValue().toString()));
-        setZeichnen();
-        zeichenFlaeche.repaint();
+        setRadius((Integer) radiusSpinner.getValue());
+        setAmountOfPoints((Integer) calcSpinner.getValue());
+        setDraw();
+        drawingArea.repaint();
     }
 
     private void updateColorPreview() {
