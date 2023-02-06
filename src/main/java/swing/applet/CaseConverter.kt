@@ -17,7 +17,7 @@ private const val CLEAR = "Clear"
  *
  * Aug 2004: Updated from Applet to JApplet (mik)
  * Jul 2018: removed JApplet stuff
- * sometime later: made Kotlin verion
+ * sometime later: made Kotlin version
  *
  * @author Bruce Quig
  * @author Michael Kölling
@@ -44,25 +44,23 @@ class CaseConverter(name: String) : JFrame(name), ActionListener {
         centerPanel.add(inputField)
 
         contentPane.add(centerPanel, BorderLayout.CENTER)
+        val buttonPanel = buttonPanel()
 
-        // make a panel for the buttons
-        val buttonPanel = JPanel()
-
-        // add the buttons to the button panel
-        val uppercase = JButton(UPPERCASE)
-        uppercase.addActionListener(this)
-        buttonPanel.add(uppercase)
-
-        val lowercase = JButton(LOWERCASE)
-        lowercase.addActionListener(this)
-        buttonPanel.add(lowercase)
-
-        val clear = JButton(CLEAR)
-        clear.addActionListener(this)
-        buttonPanel.add(clear)
 
         // add the buttons panel to the content pane
         contentPane.add(buttonPanel, BorderLayout.SOUTH)
+    }
+
+    /**
+     * Make a panel for the buttons.
+     */
+    private fun buttonPanel(): JPanel {
+        val buttonPanel = JPanel()
+        val that = this
+
+        listOf(UPPERCASE, LOWERCASE, CLEAR).map { JButton(it).apply { addActionListener(that) } }
+            .forEach(buttonPanel::add)
+        return buttonPanel
     }
 
     /**
