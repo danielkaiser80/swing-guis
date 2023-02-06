@@ -1,4 +1,4 @@
-package swing.graphics.util;
+package swing.kardioide.util;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

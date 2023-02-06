@@ -1,8 +1,9 @@
-package swing.test;
+package swing.examples;
 
 // Event handling class are defined here.
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 // Swing GUI classes are defined here.
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.WindowConstants;
 
 public class HelloSwing extends JFrame implements ActionListener {
 
+	@Serial
 	private static final long serialVersionUID = -6208364462383736254L;
 
 	public HelloSwing(String name) {

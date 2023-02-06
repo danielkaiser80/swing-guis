@@ -1,6 +1,6 @@
-package swing.graphics;
+package swing.kardioide;
 
-import swing.graphics.util.ClickedListener;
+import swing.kardioide.util.ClickedListener;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
