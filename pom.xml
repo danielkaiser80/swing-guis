@@ -7,7 +7,7 @@
     <version>1.0.0</version>
 
     <properties>
-        <kotlin.version>1.8.0</kotlin.version>
+        <kotlin.version>1.9.0</kotlin.version>
         <jupiter.version>5.9.2</jupiter.version>
         <slf4j.version>2.0.6</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,17 +36,17 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>19</jvmTarget>
+                    <jvmTarget>20</jvmTarget>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>19</source>
-                    <target>19</target>
+                    <source>20</source>
+                    <target>20</target>
                 </configuration>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <executions>
                     <execution>
                         <id>default-compile</id>
@@ -88,14 +88,14 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.69</version>
+            <version>1.70</version>
         </dependency>
 
         <!-- test dependencies -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
