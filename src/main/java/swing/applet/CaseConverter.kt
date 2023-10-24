@@ -56,9 +56,7 @@ class CaseConverter(name: String) : JFrame(name), ActionListener {
      */
     private fun buttonPanel(): JPanel {
         val buttonPanel = JPanel()
-        val that = this
-
-        listOf(UPPERCASE, LOWERCASE, CLEAR).map { JButton(it).apply { addActionListener(that) } }
+        listOf(UPPERCASE, LOWERCASE, CLEAR).map { JButton(it).apply { addActionListener(this@CaseConverter) } }
             .forEach(buttonPanel::add)
         return buttonPanel
     }
