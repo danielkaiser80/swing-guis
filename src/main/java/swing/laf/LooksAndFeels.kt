@@ -1,14 +1,6 @@
-package swing.laf;
+package swing.laf
 
-import javax.swing.UIManager;
+import javax.swing.UIManager
 
-public class LooksAndFeels {
+fun main() = UIManager.getInstalledLookAndFeels().forEach(::println)
 
-	public static void main(String... args) {
-
-		UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
-		for (UIManager.LookAndFeelInfo laf : lafs) {
-			System.out.println(laf);
-		}
-	}
-}
