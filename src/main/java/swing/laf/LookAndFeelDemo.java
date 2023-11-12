@@ -7,15 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
@@ -71,6 +63,9 @@ public class LookAndFeelDemo implements ActionListener {
         final JPanel pane = new JPanel(new GridLayout(0, 1));
         pane.add(button);
         pane.add(label);
+
+        createLafRadioButtons(pane);
+
         pane.setBorder(BorderFactory.createEmptyBorder(30, // top
                 30, // left
                 10, // bottom
@@ -78,6 +73,51 @@ public class LookAndFeelDemo implements ActionListener {
         );
 
         return pane;
+    }
+
+    public void createLafRadioButtons(JPanel pane) {
+        // Create a button group for radio buttons
+        ButtonGroup buttonGroup = new ButtonGroup();
+
+        // Create radio buttons
+        JRadioButton metalButton = new JRadioButton("Metal");
+        JRadioButton nimbusButton = new JRadioButton("Nimbus");
+        JRadioButton motifButton = new JRadioButton("Motif");
+        JRadioButton macOsButton = new JRadioButton("macOS");
+        JRadioButton oceanButton = new JRadioButton("Ocean");
+
+        // Set the default selection to Metal
+        metalButton.setSelected(true);
+
+        // Add radio buttons to the button group
+        buttonGroup.add(metalButton);
+        buttonGroup.add(nimbusButton);
+        buttonGroup.add(motifButton);
+        buttonGroup.add(macOsButton);
+        buttonGroup.add(oceanButton);
+
+        // Add action listeners to the radio buttons
+        ActionListener radioListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JRadioButton selectedButton = (JRadioButton) e.getSource();
+                String selectedOption = selectedButton.getText();
+                System.out.println("Selected option: " + selectedOption);
+            }
+        };
+
+        metalButton.addActionListener(radioListener);
+        nimbusButton.addActionListener(radioListener);
+        motifButton.addActionListener(radioListener);
+        macOsButton.addActionListener(radioListener);
+        oceanButton.addActionListener(radioListener);
+
+        // Add radio buttons to the frame
+        pane.add(metalButton);
+        pane.add(nimbusButton);
+        pane.add(motifButton);
+        pane.add(macOsButton);
+        pane.add(oceanButton);
     }
 
     @Override
