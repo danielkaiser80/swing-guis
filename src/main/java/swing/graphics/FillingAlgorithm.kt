@@ -29,7 +29,7 @@ class FillingAlgorithm(name: String?) : JFrame(name) {
      */
     init {
         setSize(420, 300)
-        val canvas: Canvas = DrawingCanvas()
+        val canvas = DrawingCanvas()
         contentPane.add(canvas, BorderLayout.EAST)
         canvas.setSize(300, 300)
         canvas.focusTraversalKeysEnabled = false
