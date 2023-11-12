@@ -3,7 +3,6 @@ package swing.laf;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author dkaiser
  */
-public class LookAndFeelDemo implements ActionListener {
+public class LookAndFeelDemo  {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LookAndFeelDemo.class);
 
@@ -29,20 +28,7 @@ public class LookAndFeelDemo implements ActionListener {
     private int numClicks = 0;
     final JLabel label = new JLabel(labelPrefix + "0    ");
 
-    // Specify the look and feel to use by defining the LOOKANDFEEL constant
-    // Valid values are: null (use the default), "Metal", "System", "Motif",
-    // "Nimbus" and "Aqua"
-
-    // Metal javax.swing.plaf.metal.MetalLookAndFeel]
-    // Nimbus javax.swing.plaf.nimbus.NimbusLookAndFeel]
-    // CDE/Motif com.sun.java.swing.plaf.motif.MotifLookAndFeel]
-    // Mac OS X com.apple.laf.AquaLookAndFeel]
-    static final String LOOKANDFEEL = "Metal";
-
-    // If you choose the Metal L&F, you can also choose a theme.
-    // Specify the theme to use by defining the THEME constant
-    // Valid values are: "DefaultMetal" and "Ocean"
-    static final String THEME = "Ocean";
+    static JFrame frame;
 
     /**
      * Create the components for the main content pane
@@ -52,7 +38,10 @@ public class LookAndFeelDemo implements ActionListener {
     public Component createComponents() {
         final JButton button = new JButton("I'm a Swing button!");
         button.setMnemonic(KeyEvent.VK_I);
-        button.addActionListener(this);
+        button.addActionListener(e -> {
+            numClicks++;
+            label.setText(labelPrefix + numClicks);
+        });
         label.setLabelFor(button);
 
         /*
@@ -80,16 +69,18 @@ public class LookAndFeelDemo implements ActionListener {
         ButtonGroup buttonGroup = new ButtonGroup();
 
         // Create radio buttons
+        JRadioButton defaultButton = new JRadioButton("Default");
         JRadioButton metalButton = new JRadioButton("Metal");
         JRadioButton nimbusButton = new JRadioButton("Nimbus");
         JRadioButton motifButton = new JRadioButton("Motif");
         JRadioButton macOsButton = new JRadioButton("macOS");
         JRadioButton oceanButton = new JRadioButton("Ocean");
 
-        // Set the default selection to Metal
-        metalButton.setSelected(true);
+        // Set the default selection
+        defaultButton.setSelected(true);
 
         // Add radio buttons to the button group
+        buttonGroup.add(defaultButton);
         buttonGroup.add(metalButton);
         buttonGroup.add(nimbusButton);
         buttonGroup.add(motifButton);
@@ -97,15 +88,13 @@ public class LookAndFeelDemo implements ActionListener {
         buttonGroup.add(oceanButton);
 
         // Add action listeners to the radio buttons
-        ActionListener radioListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JRadioButton selectedButton = (JRadioButton) e.getSource();
-                String selectedOption = selectedButton.getText();
-                System.out.println("Selected option: " + selectedOption);
-            }
+        ActionListener radioListener = e -> {
+            String selectedOption = ((JRadioButton) e.getSource()).getText();
+
+            changeLookAndFeel(selectedOption);
         };
 
+        defaultButton.addActionListener(radioListener);
         metalButton.addActionListener(radioListener);
         nimbusButton.addActionListener(radioListener);
         motifButton.addActionListener(radioListener);
@@ -113,6 +102,7 @@ public class LookAndFeelDemo implements ActionListener {
         oceanButton.addActionListener(radioListener);
 
         // Add radio buttons to the frame
+        pane.add(defaultButton);
         pane.add(metalButton);
         pane.add(nimbusButton);
         pane.add(motifButton);
@@ -120,30 +110,23 @@ public class LookAndFeelDemo implements ActionListener {
         pane.add(oceanButton);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        numClicks++;
-        label.setText(labelPrefix + numClicks);
-    }
-
-    private static void initLookAndFeel() {
-        LOGGER.info("Init...");
-
-        if (LOOKANDFEEL != null) {
-            final String lookAndFeel = getLookandFeel(LOOKANDFEEL);
+    private static void changeLookAndFeel(String selectedOption) {
+        if (selectedOption != null) {
+            final String lookAndFeel = getLookAndFeel(selectedOption);
 
             try {
-
                 LOGGER.info("Setting laf... " + lookAndFeel);
-
                 UIManager.setLookAndFeel(lookAndFeel);
 
-                // If L&F = "Metal", set the theme
-
-                if ("Metal".equals(LOOKANDFEEL)) {
-                    setTheme();
+                // If L&F = "Metal" / "Ocean", set the theme
+                if ("Metal".equals(selectedOption) || "Ocean".equals(selectedOption)) {
+                    setTheme(selectedOption);
                     UIManager.setLookAndFeel(new MetalLookAndFeel());
                 }
+
+                SwingUtilities.updateComponentTreeUI(frame);
+                frame.pack();
+
             } catch (final ClassNotFoundException e) {
                 LOGGER.error(
                         "Couldn't find class for specified look and feel:" + lookAndFeel);
@@ -165,10 +148,10 @@ public class LookAndFeelDemo implements ActionListener {
     /**
      *
      */
-    private static void setTheme() {
-        if ("DefaultMetal".equals(THEME))
+    private static void setTheme(String theme) {
+        if ("Metal".equals(theme))
             MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-        else if ("Ocean".equals(THEME))
+        else if ("Ocean".equals(theme))
             MetalLookAndFeel.setCurrentTheme(new OceanTheme());
     }
 
@@ -177,13 +160,13 @@ public class LookAndFeelDemo implements ActionListener {
      *
      * @return the look and feel as String
      */
-    private static String getLookandFeel(String laf) {
+    private static String getLookAndFeel(String laf) {
         return switch (laf) {
-            case "System" -> UIManager.getSystemLookAndFeelClassName();
+            case "Default" -> UIManager.getSystemLookAndFeelClassName();
             case "Motif" -> "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
             case "Nimbus" -> "javax.swing.plaf.nimbus.NimbusLookAndFeel";
-            case "Metal" -> "javax.swing.plaf.metal.MetalLookAndFeel";
-            case "Aqua" -> "com.apple.laf.AquaLookAndFeel";
+            case "Metal", "Ocean" -> "javax.swing.plaf.metal.MetalLookAndFeel";
+            case "macOS" -> "com.apple.laf.AquaLookAndFeel";
             default -> {
                 LOGGER.error("Unexpected value of LOOKANDFEEL specified: " + laf);
                 yield UIManager.getCrossPlatformLookAndFeelClassName();
@@ -196,14 +179,11 @@ public class LookAndFeelDemo implements ActionListener {
      * invoked from the event dispatch thread.
      */
     static void createAndShowGUI() {
-        // Set the look and feel.
-        initLookAndFeel();
-
         // Make sure we have nice window decorations.
         JFrame.setDefaultLookAndFeelDecorated(true);
 
         // Create and set up the window.
-        final JFrame frame = new JFrame("SwingApplication");
+        frame = new JFrame("SwingApplication");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         final LookAndFeelDemo app = new LookAndFeelDemo();
