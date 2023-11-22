@@ -12,21 +12,43 @@ import javax.swing.plaf.metal.DefaultMetalTheme
 import javax.swing.plaf.metal.MetalLookAndFeel
 import javax.swing.plaf.metal.OceanTheme
 
+private const val DEFAULT_LAF = "Using the default look and feel."
+private const val LABEL_PREFIX = "Number of button clicks: "
+
+
 /**
- * LookAndFeelDemo.java is a Java SE 6 example, updated for Java 8
+ * LookAndFeelDemo.java is a Java SE 6 example, updated for Kotlin
  *
  * @author dkaiser
  */
 class LookAndFeelDemo {
+    private val logger = LoggerFactory.getLogger(LookAndFeelDemo::class.java)
     private var numClicks = 0
-    private val label = JLabel(LABEL_PREFIX + "0    ")
+    private val label = JLabel("${LABEL_PREFIX}0    ")
+    private val frame: JFrame
+
+    /**
+     * Create the GUI and show it. For thread safety, this method should be
+     * invoked from the event dispatch thread.
+     */
+    init {
+        // Make sure we have nice window decorations.
+        JFrame.setDefaultLookAndFeelDecorated(true)
+        frame = JFrame("SwingApplication")
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+        val contents = createComponents()
+        frame.contentPane.add(contents, BorderLayout.CENTER)
+        logger.info("Showing the Frame...")
+        frame.pack()
+        frame.isVisible = true
+    }
 
     /**
      * Create the components for the main content pane
      *
      * @return components for the content pane
      */
-    fun createComponents(): Component {
+    private fun createComponents(): Component {
         val button = JButton("I'm a Swing button!")
         button.setMnemonic(KeyEvent.VK_I)
         button.addActionListener {
@@ -99,107 +121,75 @@ class LookAndFeelDemo {
         pane.add(oceanButton)
     }
 
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(LookAndFeelDemo::class.java)
-        private const val DEFAULT_LAF = "Using the default look and feel."
-        private const val LABEL_PREFIX = "Number of button clicks: "
-        private var frame: JFrame? = null
-        private fun changeLookAndFeel(selectedOption: String?) {
-            if (selectedOption != null) {
-                val lookAndFeel = getLookAndFeel(selectedOption)
-                try {
-                    LOGGER.info("Setting laf... $lookAndFeel")
-                    UIManager.setLookAndFeel(lookAndFeel)
+    private fun changeLookAndFeel(selectedOption: String?) {
+        if (selectedOption != null) {
+            val lookAndFeel = getLookAndFeel(selectedOption)
+            try {
+                logger.info("Setting laf... $lookAndFeel")
+                UIManager.setLookAndFeel(lookAndFeel)
 
-                    // If L&F = "Metal" / "Ocean", set the theme
-                    if ("Metal" == selectedOption || "Ocean" == selectedOption) {
-                        setTheme(selectedOption)
-                        UIManager.setLookAndFeel(MetalLookAndFeel())
-                    }
-                    SwingUtilities.updateComponentTreeUI(frame)
-                    frame!!.pack()
-                } catch (e: ClassNotFoundException) {
-                    LOGGER.error(
-                        "Couldn't find class for specified look and feel:$lookAndFeel"
-                    )
-                    LOGGER.error(
-                        "Did you include the L&F library in the class path?$DEFAULT_LAF"
-                    )
-                    LOGGER.error(e.message, e)
-                } catch (e: UnsupportedLookAndFeelException) {
-                    LOGGER.error(
-                        "Can't use the specified look and feel ($lookAndFeel) on this platform.$DEFAULT_LAF"
-                    )
-                    LOGGER.error(e.message, e)
-                } catch (e: Exception) {
-                    LOGGER.error(
-                        "Couldn't get specified look and feel ($lookAndFeel), for some reason.$DEFAULT_LAF"
-                    )
-                    LOGGER.error(e.message, e)
+                // If L&F = "Metal" / "Ocean", set the theme
+                if ("Metal" == selectedOption || "Ocean" == selectedOption) {
+                    setTheme(selectedOption)
+                    UIManager.setLookAndFeel(MetalLookAndFeel())
                 }
-            }
-        }
+                SwingUtilities.updateComponentTreeUI(frame)
+                frame.pack()
 
-        /**
-         *
-         */
-        private fun setTheme(theme: String) {
-            when (theme) {
-                "Metal" -> MetalLookAndFeel.setCurrentTheme(DefaultMetalTheme())
-                "Ocean" -> MetalLookAndFeel.setCurrentTheme(
-                    OceanTheme()
+            } catch (e: ClassNotFoundException) {
+                logger.error(
+                    "Couldn't find class for specified look and feel:$lookAndFeel"
                 )
+                logger.error(
+                    "Did you include the L&F library in the class path?$DEFAULT_LAF"
+                )
+                logger.error(e.message, e)
+            } catch (e: UnsupportedLookAndFeelException) {
+                logger.error(
+                    "Can't use the specified look and feel ($lookAndFeel) on this platform.$DEFAULT_LAF"
+                )
+                logger.error(e.message, e)
+            } catch (e: Exception) {
+                logger.error(
+                    "Couldn't get specified look and feel ($lookAndFeel), for some reason.$DEFAULT_LAF"
+                )
+                logger.error(e.message, e)
             }
-        }
-
-        /**
-         * Gets the class name of the Look and Feel specified
-         *
-         * @return the look and feel as String
-         */
-        private fun getLookAndFeel(laf: String): String = when (laf) {
-            "Default" -> UIManager.getSystemLookAndFeelClassName()
-            "Motif" -> "com.sun.java.swing.plaf.motif.MotifLookAndFeel"
-            "Nimbus" -> "javax.swing.plaf.nimbus.NimbusLookAndFeel"
-            "Metal", "Ocean" -> "javax.swing.plaf.metal.MetalLookAndFeel"
-            "macOS" -> "com.apple.laf.AquaLookAndFeel"
-            else -> {
-                LOGGER.error("Unexpected value of LOOKANDFEEL specified: $laf")
-                UIManager.getCrossPlatformLookAndFeelClassName()
-            }
-        }
-
-        /**
-         * Create the GUI and show it. For thread safety, this method should be
-         * invoked from the event dispatch thread.
-         */
-        private fun createAndShowGUI() {
-            // Make sure we have nice window decorations.
-            JFrame.setDefaultLookAndFeelDecorated(true)
-
-            // Create and set up the window.
-            frame = JFrame("SwingApplication")
-            frame!!.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-            val app = LookAndFeelDemo()
-            val contents = app.createComponents()
-            frame!!.contentPane.add(contents, BorderLayout.CENTER)
-            LOGGER.info("Showing the Frame...")
-
-            // Display the window.
-            frame!!.pack()
-            frame!!.isVisible = true
-        }
-
-        /**
-         * Main method to start the program
-         *
-         * @param args not used
-         */
-        @JvmStatic
-        fun main(args: Array<String>) {
-            // Schedule a job for the event dispatch thread:
-            // creating and showing this application's GUI.
-            SwingUtilities.invokeLater { createAndShowGUI() }
         }
     }
+
+    private fun setTheme(theme: String) {
+        when (theme) {
+            "Metal" -> MetalLookAndFeel.setCurrentTheme(DefaultMetalTheme())
+            "Ocean" -> MetalLookAndFeel.setCurrentTheme(
+                OceanTheme()
+            )
+        }
+    }
+
+    /**
+     * Gets the class name of the Look and Feel specified
+     *
+     * @return the look and feel as String
+     */
+    private fun getLookAndFeel(laf: String): String = when (laf) {
+        "Default" -> UIManager.getSystemLookAndFeelClassName()
+        "Motif" -> "com.sun.java.swing.plaf.motif.MotifLookAndFeel"
+        "Nimbus" -> "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+        "Metal", "Ocean" -> "javax.swing.plaf.metal.MetalLookAndFeel"
+        "macOS" -> "com.apple.laf.AquaLookAndFeel"
+        else -> {
+            logger.error("Unexpected value of LOOKANDFEEL specified: $laf")
+            UIManager.getCrossPlatformLookAndFeelClassName()
+        }
+    }
+}
+
+/**
+ * Main method to start the program
+ */
+fun main() {
+    // Schedule a job for the event dispatch thread:
+    // creating and showing this application's GUI.
+    SwingUtilities.invokeLater { LookAndFeelDemo() }
 }
