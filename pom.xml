@@ -36,15 +36,15 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>20</jvmTarget>
+                    <jvmTarget>21</jvmTarget>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>20</source>
-                    <target>20</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
                 <version>3.11.0</version>
                 <executions>
